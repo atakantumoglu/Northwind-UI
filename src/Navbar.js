@@ -22,6 +22,7 @@ const Navbar = () => {
     return (
         <NavbarStyled>
             <NavLink to="/customers">Customers</NavLink>
+            <NavLink to="/create-customer">Create Customer</NavLink>
         </NavbarStyled>
     );
 }

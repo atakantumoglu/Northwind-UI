@@ -11,7 +11,10 @@ const NavbarStyled = styled.nav`
     padding: 0 20px;  // Sağdan ve soldan biraz boşluk ekledik
     color: white;
     box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);  // Altta hafif bir gölge ekleyerek daha modern bir görünüm kazandırıyoruz
+    transition: margin-left 0.3s; // Ekleyin
+    margin-left: ${props => props.sidebarCollapsed ? '80px' : '250px'};
 `;
+
 
 const NavLinks = styled.div`
     display: flex; // İçerikleri yanyana diziyoruz
@@ -29,10 +32,10 @@ const NavLink = styled(Link)`
     }
 `;
 
-const Navbar = () => {
-    const {currentUser} = useAuth()
+const Navbar = ({ sidebarCollapsed }) => { // sidebarCollapsed prop'ını ekleyin
+    const { currentUser } = useAuth();
     return (
-        <NavbarStyled>
+        <NavbarStyled sidebarCollapsed={sidebarCollapsed}>
             <NavLinks>
                 <NavLink to="/customers">Customers</NavLink>
                 <NavLink to="/create-customer">Create Customer</NavLink>

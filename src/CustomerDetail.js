@@ -71,7 +71,7 @@ function CustomerDetail() {
             try {
                 const response = await axios.get(`https://localhost:44323/api/customer/get-by-id?customerId=${customerId}`,{
                     headers: {
-                        'Authorization': `Bearer ${currentUser}`  // Token'ı başlığa ekleyerek isteği yap
+                        'Authorization': `Bearer ${currentUser}`  
                     }
                 });
                 setCustomerData(response.data.data);

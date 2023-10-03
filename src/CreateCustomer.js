@@ -1,61 +1,71 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import styled from 'styled-components';
+import { useAuth } from './AuthContext';
 
 const FormRow = styled.div`
     display: flex;
+    flex-direction: row;
     justify-content: space-between;
+    margin-bottom: 20px;
 `;
 
 const FormColumn = styled.div`
-    width: 48%; // iki sütun arasında boşluk bırak
+    width: 48%;
 `;
+
 const Container = styled.div`
     max-width: 800px;
     margin: 50px auto;
     padding: 20px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-    background-color: #ffffff;
-    border-radius: 8px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+    background-color: #2D142C;  // Paletten aldığınız renklerden biri
+    border-radius: 10px;
 `;
 
 const Title = styled.h1`
     text-align: center;
-    margin-bottom: 20px;
-    color: #007bff;
-    border-bottom: 2px solid #eee;
-    padding-bottom: 10px;
+    margin-bottom: 30px;
+    color: #EE4540;  // Paletten aldığınız renklerden biri
 `;
 
 const DataLabel = styled.label`
     font-weight: bold;
     display: block;
-    margin-top: 10px;
+    margin: 10px 0;
+    color: #C72C41;  // Paletten aldığınız renklerden biri
 `;
 
 const Input = styled.input`
+    box-sizing: border-box;
     padding: 10px;
-    margin: 10px 0;
     width: 100%;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    font-size: 14px;
+    border: 1px solid #801336;  // Paletten aldığınız renklerden biri
+    border-radius: 5px;
+    background-color: #510A32;  // Paletten aldığınız renklerden biri
+    color: #EE4540;  // Paletten aldığınız renklerden biri
+    transition: border-color 0.2s, background-color 0.2s;
+
+    &:focus {
+        border-color: #EE4540;  // Paletten aldığınız renklerden biri
+        background-color: #801336;  // Paletten aldığınız renklerden biri
+        outline: none;
+    }
 `;
 
 const Button = styled.button`
     display: block;
     padding: 10px 15px;
-    background-color: #007bff;
+    background-color: #EE4540;  // Paletten aldığınız renklerden biri
     color: white;
     border: none;
     border-radius: 5px;
     cursor: pointer;
-    transition: background-color 0.2s;
-    width: 15%;
-    margin: 10px 0;
+    transition: background-color 0.3s;
+    width: 100%;
 
     &:hover {
-        background-color: #0056b3;
+        background-color: #C72C41;  // Paletten aldığınız renklerden biri
     }
 `;
 
@@ -81,10 +91,15 @@ function CreateCustomer() {
         }));
     };
 
+    const {currentUser} = useAuth();
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const response = await axios.post('https://localhost:44323/customer', formData);
+            const response = await axios.post('https://localhost:44323/api/customer', formData, {
+                headers: {
+                    Authorization: `Bearer ${currentUser}`
+                }
+            });
             if (response.data) {
                 alert("Customer created successfully!");
             }

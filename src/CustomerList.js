@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
+import { useAuth } from './AuthContext';
 
 const Table = styled.table`
     width: 100%;
@@ -33,11 +34,16 @@ const TableHeadCell = styled.th`
 function CustomerList() {
     const [customers, setCustomers] = useState([]);
     const [loading, setLoading] = useState(true);
+    const { currentUser } = useAuth();
 
     useEffect(() => {
         async function fetchData() {
             try {
-                const response = await axios.get('https://localhost:44323/customer');
+                const response = await axios.get('https://localhost:44323/api/customer', {
+                    headers: {
+                        'Authorization': `Bearer ${currentUser}`  // Token'ı başlığa ekleyerek isteği yap
+                    }
+                });
                 setCustomers(response.data.data);
                 setLoading(false);
             } catch (error) {
@@ -47,7 +53,7 @@ function CustomerList() {
         }
 
         fetchData();
-    }, []);
+    }, [currentUser]); 
 
     if (loading) {
         return <div>Loading...</div>;

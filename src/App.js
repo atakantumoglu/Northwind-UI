@@ -1,28 +1,48 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import Login from './Login';
 import CustomerDetail from './CustomerDetail';
 import CustomerList from './CustomerList';
 import Navbar from './Navbar';
 import Signup from './Signup';
-import { AuthProvider } from './AuthContext'; // AuthContext'in yolunu doğru bir şekilde ekleyin
+import { AuthProvider } from './AuthContext'; 
 import CreateCustomer from './CreateCustomer';
+import Sidebar from './Sidebar';
+import styled from 'styled-components';
+
+const MainContainer = styled.div`
+  display: flex;
+  height: 100vh;
+  width: 100%;
+`;
+
+const MainContent = styled.div`
+  flex: 1;
+  overflow: auto;
+  padding: 20px;
+  transition: margin-left 0.3s; // Ekleyin
+  margin-left: ${props => props.sidebarCollapsed ? '80px' : '250px'};
+`;
 
 function App() {
+    const [collapsed, setCollapsed] = useState(false); 
     return (
         <AuthProvider>
             <Router>
-                <Navbar />
-                <Routes>
-                    <Route path="/login" element={<Login />} />
-                    <Route path="/customers" element={<CustomerList />} />
-                    <Route path="/customer/:customerId" element={<CustomerDetail />} />
-                    <Route path="/signup" element={<Signup />} />
-                    <Route path="/create-customer" element={<CreateCustomer />} />
-                    {/* Diğer rotalarınızı buraya ekleyin */}
-                    {/* Varsayılan olarak / yolunda bir şey tanımlı değilse aşağıdaki gibi bir yönlendirme ekleyebilirsiniz. */}
-                    <Route path="*" element={<Login />} />
-                </Routes>
+                <Navbar sidebarCollapsed={collapsed} />
+                <MainContainer>
+                    <Sidebar collapsed={collapsed} setCollapsed={setCollapsed} />
+                    <MainContent sidebarCollapsed={collapsed}>
+                        <Routes>
+                            <Route path="/login" element={<Login />} />
+                            <Route path="/customers" element={<CustomerList />} />
+                            <Route path="/customer/:customerId" element={<CustomerDetail />} />
+                            <Route path="/signup" element={<Signup />} />
+                            <Route path="/create-customer" element={<CreateCustomer />} />
+                            <Route path="*" element={<Login />} />
+                        </Routes>
+                    </MainContent>
+                </MainContainer>
             </Router>
         </AuthProvider>
     );
